@@ -14,6 +14,8 @@ const Login = () => {
       .then(res => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('username', res.data.username);
+        localStorage.setItem('type', res.data.type);
+        localStorage.setItem('id', res.data.id);
         console.log(res.data);
       })
       .catch(error => {

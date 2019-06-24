@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+// Add spinner and display error
+
 const Register = () => {
   const usernameRef = React.createRef();
   const passwordRef = React.createRef();

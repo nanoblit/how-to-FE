@@ -1,9 +1,12 @@
 import React from 'react';
 import { Route } from 'react-router';
 
+import withAuth from './components/withAuth';
 import Welcome from './components/Welcome';
 import Login from './components/Login';
 import Register from './components/Register';
+import Guides from './components/Guides';
+import Guide from './components/Guide';
 
 /*
 What pages do we need?
@@ -65,11 +68,16 @@ Rducers:
     LOADING - sets loading to payload
 */
 
+const AuthedGuides = withAuth(Guides);
+const AuthedGuide = withAuth(Guide);
+
 const App = () => (
   <div>
     <Route path="/welcome" component={Welcome} />
     <Route path="/login" component={Login} />
     <Route path="/register" component={Register} />
+    <Route path="/" exact component={AuthedGuides} />
+    <Route path="/guide/:id" component={AuthedGuide} />
   </div>
 );
 
