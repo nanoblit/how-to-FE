@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import authedAxios from '../misc/authedAxios';
@@ -11,6 +11,7 @@ const withAuth = Component => props => {
 
   const authorize = () => {
     const id = localStorage.getItem('id');
+    console.log(id);
     if (id) {
       authedAxios()
         .get(`http://localhost:8000/users/${id}`)
@@ -23,19 +24,24 @@ const withAuth = Component => props => {
           console.log(error.message);
           setAuthorizing(false);
         });
+    } else {
+      setAuthorizing(false);
     }
   };
 
-  authorize();
+  useEffect(() => {
+    console.log(props);
+    authorize();
+  }, []);
 
   const render = () => {
-    if (!authorizing && authorized) {
-      console.log('component');
-      return <Component {...props} />;
-    }
-    if (!authorizing && !authorized) {
-      console.log('redirect');
-      return <Redirect to="/welcome" />;
+    if (props.redirected) {
+      if (!authorizing && authorized) {
+        return <Component {...props} />;
+      }
+      if (!authorizing && !authorized) {
+        return <Redirect to="/welcome" />;
+      }
     }
     return null;
   };
