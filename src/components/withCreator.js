@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+
+import * as actions from '../actions';
 
 const withCreator = Component => props => {
   const [authorizing, setAuthorizing] = useState(true);
@@ -8,7 +12,9 @@ const withCreator = Component => props => {
   const authorize = () => {
     if (localStorage.getItem('type') === 'creator') {
       if (props.match.params.id) {
-        if (props.match.params.id === localStorage.getItem('id')) {
+        const guide = props.guides.find(({ id }) => id === Number(props.match.params.id));
+        console.log(props.guides);
+        if (guide.username === localStorage.getItem('username')) {
           setAuthorizing(false);
           setAuthorized(true);
         } else {
@@ -24,12 +30,22 @@ const withCreator = Component => props => {
   };
 
   useEffect(() => {
-    authorize();
+    if (props.guides.length !== 0) {
+      authorize();
+    }
+  }, [props.guides]);
+
+  useEffect(() => {
+    if (props.guides.length === 0) {
+      console.log('gggggggggggggggggggggggg');
+      props.fetchGuides();
+    }
   }, []);
 
   const render = () => {
+    console.log(authorizing, authorized);
     if (!authorizing && authorized) {
-      return <Component {...props} />;
+      return <Component {...props} redirected />;
     }
     if (!authorizing && !authorized) {
       return (
@@ -44,4 +60,12 @@ const withCreator = Component => props => {
   return render();
 };
 
-export default withCreator;
+const mapStateToProps = state => ({ guides: state.guides });
+
+export default compose(
+  connect(
+    mapStateToProps,
+    { fetchGuides: actions.fetchGuides },
+  ),
+  withCreator,
+);

@@ -9,7 +9,9 @@ const Guide = ({ guides, match, fetchGuides }) => {
   const guide = guides.find(({ id }) => id === Number(match.params.id));
 
   useEffect(() => {
-    fetchGuides();
+    if (guides.length === 0) {
+      fetchGuides();
+    }
   }, []);
 
   const convertStepsToArray = thing => {

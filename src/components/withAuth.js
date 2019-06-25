@@ -30,15 +30,18 @@ const withAuth = Component => props => {
   };
 
   useEffect(() => {
+    console.log(props);
     authorize();
   }, []);
 
   const render = () => {
-    if (!authorizing && authorized) {
-      return <Component {...props} />;
-    }
-    if (!authorizing && !authorized) {
-      return <Redirect to="/welcome" />;
+    if (props.redirected) {
+      if (!authorizing && authorized) {
+        return <Component {...props} />;
+      }
+      if (!authorizing && !authorized) {
+        return <Redirect to="/welcome" />;
+      }
     }
     return null;
   };

@@ -73,14 +73,16 @@ Rducers:
 const AuthedGuides = withAuth(Guides);
 const AuthedGuide = withAuth(Guide);
 const AuthedCreateGuide = withCreator(withAuth(CreateGuide));
+const AuthedEditGuide = withCreator(withAuth(CreateGuide));
 
 const App = () => (
   <div>
     <Route path="/welcome" component={Welcome} />
     <Route path="/login" component={Login} />
     <Route path="/register" component={Register} />
-    <Route path="/" exact component={AuthedGuides} />
-    <Route path="/guide/:id" component={AuthedGuide} />
+    <Route path="/" exact render={props => <AuthedGuides {...props} redirected />} />
+    <Route path="/guide/:id" exact render={props => <AuthedGuide {...props} redirected />} />
+    <Route path="/guide/:id/edit" component={AuthedEditGuide} />
     <Route path="/createGuide" component={AuthedCreateGuide} />
   </div>
 );
