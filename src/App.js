@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Guides from './components/Guides';
 import Guide from './components/Guide';
+import CreateGuide from './components/CreateGuide';
 
 /*
 What pages do we need?
@@ -78,6 +79,7 @@ const App = () => (
     <Route path="/register" component={Register} />
     <Route path="/" exact component={AuthedGuides} />
     <Route path="/guide/:id" component={AuthedGuide} />
+    <Route path="/createGuide" component={CreateGuide} />
   </div>
 );
 
