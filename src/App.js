@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router';
 
 import withAuth from './components/withAuth';
+import withCreator from './components/withCreator';
 import Welcome from './components/Welcome';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -71,6 +72,7 @@ Rducers:
 
 const AuthedGuides = withAuth(Guides);
 const AuthedGuide = withAuth(Guide);
+const AuthedCreateGuide = withCreator(withAuth(CreateGuide));
 
 const App = () => (
   <div>
@@ -79,7 +81,7 @@ const App = () => (
     <Route path="/register" component={Register} />
     <Route path="/" exact component={AuthedGuides} />
     <Route path="/guide/:id" component={AuthedGuide} />
-    <Route path="/createGuide" component={CreateGuide} />
+    <Route path="/createGuide" component={AuthedCreateGuide} />
   </div>
 );
 

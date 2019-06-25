@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
+import authedAxios from '../misc/authedAxios';
 import * as actions from '../actions';
 
-// - ++/createGuide Create guide page with name, category, Step 1, button to
-// add/remove steps, option to add video link.
+// Add loading and showing errors
 
-const CreateGuide = () => {
+const CreateGuide = ({ match }) => {
   const [steps, setSteps] = useState(['']);
   const titleRef = React.createRef();
   const categoryRef = React.createRef();
@@ -29,6 +29,16 @@ const CreateGuide = () => {
     }
   };
 
+  const sendGuide = data => {
+    authedAxios()
+      // eslint-disable-next-line no-unexpected-multiline
+      [match.params.id ? 'post' : 'put']('http://localhost:8000/guides', data)
+      .then(() => {
+        console.log('added!');
+      })
+      .catch(error => console.log(error.message));
+  };
+
   const handleGuideSubmit = e => {
     e.preventDefault();
 
@@ -36,14 +46,14 @@ const CreateGuide = () => {
       title: titleRef.current.value,
       description: descriptionRef.current.value,
       type: categoryRef.current.value,
-      user_id: localStorage.getItem('id'),
+      user_id: Number(localStorage.getItem('id')),
     };
 
     steps.forEach((step, idx) => {
       toSend[`step_${idx + 1}`] = step;
     });
-
     console.log(toSend);
+    sendGuide(toSend);
   };
 
   return (
