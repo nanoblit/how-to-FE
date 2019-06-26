@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import authedAxios from '../misc/authedAxios';
 import * as actions from '../actions';
 
 // Add loading and showing errors
+// Might need a fetch after adding and updating guide
 
 const CreateGuide = ({ match, guides, fetchGuides }) => {
   const [steps, setSteps] = useState(['']);
@@ -30,8 +32,10 @@ const CreateGuide = ({ match, guides, fetchGuides }) => {
   };
 
   const sendGuide = data => {
+    const { id } = match.params;
+    console.log(data);
     authedAxios()
-      [match.params.id ? 'put' : 'post']('http://localhost:8000/guides', data)
+      [id ? 'put' : 'post'](`http://localhost:8000/guides/${id || ''}`, data)
       .then(res => {
         console.log(res.data);
         console.log('added!');
@@ -52,15 +56,8 @@ const CreateGuide = ({ match, guides, fetchGuides }) => {
     steps.forEach((step, idx) => {
       toSend[`step_${idx + 1}`] = step;
     });
-    console.log(toSend);
     sendGuide(toSend);
   };
-
-  useEffect(() => {
-    if (match.params.id) {
-      fetchGuides();
-    }
-  }, []);
 
   useEffect(() => {
     if (match.params.id && guides.length !== 0) {
@@ -70,53 +67,56 @@ const CreateGuide = ({ match, guides, fetchGuides }) => {
       descriptionRef.current.value = guide.description;
       linkRef.current.value = guide.link;
 
-      setSteps([]);
-
-      // for (let i = 1; i++;) {
-      //   const step = guide[`step_${i}`];
-      //   if (!step) break;
-      //   setSteps(...steps, step);
-      // }
+      let newSteps = [];
+      for (let i = 1; i < 6; i++) {
+        const step = guide[`step_${i}`];
+        if (!step) break;
+        newSteps = [...newSteps, step];
+      }
+      setSteps(newSteps);
     }
   }, [guides]);
 
   return (
-    <form onSubmit={handleGuideSubmit}>
-      <label htmlFor="title">
-        Title
-        <input ref={titleRef} id="title" required />
-      </label>
-      <label htmlFor="category">
-        Category
-        <input ref={categoryRef} id="category" required />
-      </label>
-      <label htmlFor="description">
-        Description
-        <input ref={descriptionRef} id="description" required />
-      </label>
-      <label htmlFor="link">
-        Link
-        <input ref={linkRef} id="link" />
-      </label>
-      {steps.map((step, idx) => (
-        <label htmlFor={`step_${idx + 1}`}>
-          Step {idx + 1}
-          <input
-            value={step}
-            onChange={e => handleStepChange(e, idx)}
-            id={`step_${idx + 1}`}
-            required
-          />
+    <div>
+      <Link to="/">Back</Link>
+      <form onSubmit={handleGuideSubmit}>
+        <label htmlFor="title">
+          Title
+          <input ref={titleRef} id="title" required />
         </label>
-      ))}
-      <button type="button" onClick={handleMoreSteps}>
-        More steps
-      </button>
-      <button type="button" onClick={handleLessSteps}>
-        Less steps
-      </button>
-      <button type="submit">Save guide</button>
-    </form>
+        <label htmlFor="category">
+          Category
+          <input ref={categoryRef} id="category" required />
+        </label>
+        <label htmlFor="description">
+          Description
+          <input ref={descriptionRef} id="description" required />
+        </label>
+        <label htmlFor="link">
+          Link
+          <input ref={linkRef} id="link" />
+        </label>
+        {steps.map((step, idx) => (
+          <label htmlFor={`step_${idx + 1}`}>
+            Step {idx + 1}
+            <input
+              value={step}
+              onChange={e => handleStepChange(e, idx)}
+              id={`step_${idx + 1}`}
+              required
+            />
+          </label>
+        ))}
+        <button type="button" onClick={handleMoreSteps}>
+          More steps
+        </button>
+        <button type="button" onClick={handleLessSteps}>
+          Less steps
+        </button>
+        <button type="submit">Save guide</button>
+      </form>
+    </div>
   );
 };
 

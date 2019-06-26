@@ -9,7 +9,6 @@ const Register = () => {
   const accountTypeRef = React.createRef();
 
   const register = (username, password, type) => {
-    console.log({ username, password, type });
     axios
       .post('http://localhost:8000/register', { username, password, type })
       .then(res => {

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import * as actions from '../actions';
 
@@ -28,6 +29,7 @@ const Guide = ({ guides, match, fetchGuides }) => {
 
   return guide ? (
     <div>
+      <Link to="/">Back</Link>
       <h1>{guide.title}</h1>
       <p>by {guide.username}</p>
       <p>type: {guide.type}</p>

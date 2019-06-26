@@ -9,6 +9,11 @@ const Guides = ({ guides, fetchGuides }) => {
     fetchGuides();
   }, []);
 
+  const doesBelongToUser = id => {
+    const guide = guides.find(thisGuide => thisGuide.id === id);
+    return guide.username === localStorage.getItem('username');
+  }
+
   return (
     <div>
       {guides.map(({ id, title, username }) => (
@@ -16,6 +21,7 @@ const Guides = ({ guides, fetchGuides }) => {
           <Link to={`guide/${id}`}>
             Title: {title} by {username}
           </Link>
+          {doesBelongToUser(id) && <div>Edit Delete</div>}
         </div>
       ))}
     </div>

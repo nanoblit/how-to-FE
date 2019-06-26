@@ -8,7 +8,6 @@ const Login = () => {
   const passwordRef = React.createRef();
 
   const login = (username, password) => {
-    console.log({ username, password });
     axios
       .post('http://localhost:8000/login', { username, password })
       .then(res => {
