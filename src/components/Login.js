@@ -35,7 +35,7 @@ const Login = () => {
       </label>
       <label htmlFor="password">
         Password
-        <input ref={passwordRef} id="password" required />
+        <input ref={passwordRef} id="password" type="password" required />
       </label>
       <button type="submit">Login</button>
     </form>

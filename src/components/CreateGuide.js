@@ -8,12 +8,25 @@ import * as actions from '../actions';
 // Add loading and showing errors
 // Might need a fetch after adding and updating guide
 
-const CreateGuide = ({ match, guides, fetchGuides }) => {
+const CreateGuide = ({
+  match, history, guides, fetchGuides,
+}) => {
   const [steps, setSteps] = useState(['']);
   const titleRef = React.createRef();
   const categoryRef = React.createRef();
   const descriptionRef = React.createRef();
   const linkRef = React.createRef();
+
+  const deleteGuide = () => {
+    authedAxios()
+      .delete(`http://localhost:8000/guides/${match.params.id}`)
+      .then(() => {
+        history.push('/');
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  };
 
   const handleStepChange = (e, idx) => {
     const newSteps = steps.map((step, i) => (i === idx ? e.target.value : step));
@@ -80,6 +93,11 @@ const CreateGuide = ({ match, guides, fetchGuides }) => {
   return (
     <div>
       <Link to="/">Back</Link>
+      {match.params.id && (
+        <button type="button" onClick={deleteGuide()}>
+          Delete
+        </button>
+      )}
       <form onSubmit={handleGuideSubmit}>
         <label htmlFor="title">
           Title

@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import authedAxios from '../misc/authedAxios';
 import * as actions from '../actions';
 
 // Change it so it fetches only it's own guide
 
-const Guide = ({ guides, match, fetchGuides }) => {
+const Guide = ({ guides, match, history, fetchGuides }) => {
   const guide = guides.find(({ id }) => id === Number(match.params.id));
 
   useEffect(() => {
@@ -14,6 +15,17 @@ const Guide = ({ guides, match, fetchGuides }) => {
       fetchGuides();
     }
   }, []);
+
+  const deleteGuide = id => {
+    authedAxios()
+      .delete(`http://localhost:8000/guides/${id}`)
+      .then(() => {
+        history.push('/');
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  };
 
   const convertStepsToArray = thing => {
     const steps = [];
@@ -30,6 +42,9 @@ const Guide = ({ guides, match, fetchGuides }) => {
   return guide ? (
     <div>
       <Link to="/">Back</Link>
+      <button type="button" onClick={() => deleteGuide(match.params.id)}>
+        Delete
+      </button>
       <h1>{guide.title}</h1>
       <p>by {guide.username}</p>
       <p>type: {guide.type}</p>

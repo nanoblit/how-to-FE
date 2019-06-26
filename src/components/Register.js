@@ -36,7 +36,7 @@ const Register = () => {
       </label>
       <label htmlFor="password">
         Password
-        <input ref={passwordRef} id="password" />
+        <input ref={passwordRef} id="password" type="password" />
       </label>
       <label htmlFor="accountType">
         Username
