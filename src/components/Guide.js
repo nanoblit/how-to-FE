@@ -1,11 +1,34 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import {
+  Button,
+  Heading,
+  FormField,
+  TextInput,
+  Select,
+  RadioButton,
+  Text,
+  TextArea,
+} from 'grommet';
 
 import authedAxios from '../misc/authedAxios';
 import * as actions from '../actions';
 
 // Change it so it fetches only it's own guide
+
+const GuideDiv = styled.div`
+  .topButtons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+
+    a {
+      margin-right: 20px;
+    }
+  }
+`;
 
 const Guide = ({
   guides, match, history, fetchGuides,
@@ -47,13 +70,25 @@ const Guide = ({
   if (guide) steps = convertStepsToArray(guide);
 
   return guide ? (
-    <div>
-      <Link to="/">Back</Link>
-      {doesBelongToUser() && (
-        <button type="button" onClick={() => deleteGuide(match.params.id)}>
-          Delete
-        </button>
-      )}
+    <GuideDiv>
+      <div className="topButtons">
+        <Link to="/">
+          <Button label="Back" />
+        </Link>
+        {doesBelongToUser() && (
+          <>
+            <Link to={`/guide/${match.params.id}/edit`}>
+              <Button label="Edit" />
+            </Link>
+            <Button
+              type="button"
+              onClick={() => deleteGuide(match.params.id)}
+              label="Delete"
+              color="status-critical"
+            />
+          </>
+        )}
+      </div>
       <h1>{guide.title}</h1>
       <p>by {guide.username}</p>
       <p>type: {guide.type}</p>
@@ -65,7 +100,7 @@ const Guide = ({
           return null;
         })}
       </ol>
-    </div>
+    </GuideDiv>
   ) : null;
 };
 

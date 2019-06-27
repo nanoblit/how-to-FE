@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {
   Button, Heading, FormField, TextInput, Select, RadioButton, Text,
 } from 'grommet';
+import youtubeThumbnail from 'youtube-thumbnail';
 
 import authedAxios from '../misc/authedAxios';
 import * as actions from '../actions';
@@ -36,7 +37,7 @@ const GuidesDiv = styled.div`
     justify-content: space-around;
 
     .card {
-      position: relative;
+      display: block;
       width: 45%;
       height: 200px;
       margin-bottom: 20px;
@@ -49,24 +50,30 @@ const GuidesDiv = styled.div`
 
       span {
         color: white;
+        margin-left: 5px;
+        text-shadow: 2px 2px 11px #000000, 2px 2px 11px #000000, 2px 2px 11px #000000;
       }
 
       .cardDiv {
         display: flex;
+        height: 100%;
         justify-content: space-between;
-        position: relative;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
 
-        div {
-          background-color: red;
-          align-self: end;
+        .guideButtons {
+          align-self: flex-end;
+          button {
+            background-color: #C2B5DB;
+            margin-right: 5px;
+          }
         }
       }
     }
   }
+`;
+
+const CardDiv = styled.div`
+  ${({ thumbnail }) => (thumbnail ? `background-image: url("${thumbnail}");` : '')}
+  background-size: cover;
 `;
 
 const Guides = ({ guides, fetchGuides, setGuides }) => {
@@ -118,6 +125,11 @@ const Guides = ({ guides, fetchGuides, setGuides }) => {
     setSelectedRadio(value);
   };
 
+  const getYoutubeThumbnail = link => {
+    if (link && link.indexOf('youtube') !== -1) return youtubeThumbnail(link).default.url;
+    return null;
+  };
+
   useEffect(() => {
     handleSearchChange();
   }, [selectedRadio]);
@@ -151,23 +163,28 @@ const Guides = ({ guides, fetchGuides, setGuides }) => {
       <div className="cards">
         {guides.map(
           ({
-            id, title, username, displayed,
+            id, title, username, displayed, link,
           }) => displayed && (
           <Link key={id} className="card" to={`guide/${id}`}>
-            <div className="cardDiv">
+            <CardDiv thumbnail={getYoutubeThumbnail(link)} className="cardDiv">
               <Text>
                 {title}
                 <br /> by {username}
               </Text>
               {doesBelongToUser(id) && (
-              <div>
-                <Link to={`guide/${id}/edit`}>Edit</Link>
-                <button type="button" onClick={() => deleteGuide(id)}>
-                        Delete
-                </button>
+              <div className="guideButtons">
+                <Link to={`guide/${id}/edit`}>
+                  <Button label="Edit" />
+                </Link>
+                <Button
+                  type="button"
+                  onClick={() => deleteGuide(id)}
+                  label="Delete"
+                  color="status-critical"
+                />
               </div>
               )}
-            </div>
+            </CardDiv>
           </Link>
           ),
         )}
