@@ -7,7 +7,9 @@ import * as actions from '../actions';
 
 // Change it so it fetches only it's own guide
 
-const Guide = ({ guides, match, history, fetchGuides }) => {
+const Guide = ({
+  guides, match, history, fetchGuides,
+}) => {
   const guide = guides.find(({ id }) => id === Number(match.params.id));
 
   useEffect(() => {
@@ -36,15 +38,22 @@ const Guide = ({ guides, match, history, fetchGuides }) => {
     return steps;
   };
 
+  const doesBelongToUser = () => {
+    const thatGuide = guides.find(thisGuide => thisGuide.id === Number(match.params.id));
+    return thatGuide.username === localStorage.getItem('username');
+  };
+
   let steps;
   if (guide) steps = convertStepsToArray(guide);
 
   return guide ? (
     <div>
       <Link to="/">Back</Link>
-      <button type="button" onClick={() => deleteGuide(match.params.id)}>
-        Delete
-      </button>
+      {doesBelongToUser() && (
+        <button type="button" onClick={() => deleteGuide(match.params.id)}>
+          Delete
+        </button>
+      )}
       <h1>{guide.title}</h1>
       <p>by {guide.username}</p>
       <p>type: {guide.type}</p>
