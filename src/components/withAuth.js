@@ -13,7 +13,7 @@ const withAuth = Component => props => {
     const id = localStorage.getItem('id');
     if (id) {
       authedAxios()
-        .get(`http://localhost:8000/users/${id}`)
+        .get(`https://bw-how-to.herokuapp.com/users/${id}`)
         .then(() => {
           setAuthorized(true);
           setAuthorizing(false);

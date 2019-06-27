@@ -33,7 +33,7 @@ const Login = ({ history }) => {
 
   const login = (username, password) => {
     axios
-      .post('http://localhost:8000/login', { username, password })
+      .post('https://bw-how-to.herokuapp.com/login', { username, password })
       .then(res => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('username', res.data.username);

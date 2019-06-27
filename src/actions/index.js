@@ -8,7 +8,7 @@ export const setGuides = guides => ({ type: types.SET_GUIDES, payload: guides })
 export const fetchGuides = () => dispatch => {
   dispatch({ type: types.SET_GUIDES, payload: [] });
   authedAxios()
-    .get('http://localhost:8000/guides')
+    .get('https://bw-how-to.herokuapp.com/guides')
     .then(res => {
       console.log(res.data);
       const data = res.data.map(d => {

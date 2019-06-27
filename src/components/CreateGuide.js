@@ -74,7 +74,7 @@ const CreateGuide = ({
 
   const deleteGuide = () => {
     authedAxios()
-      .delete(`http://localhost:8000/guides/${match.params.id}`)
+      .delete(`https://bw-how-to.herokuapp.com/guides/${match.params.id}`)
       .then(() => {
         history.push('/');
       })
@@ -103,7 +103,7 @@ const CreateGuide = ({
     const { id } = match.params;
     console.log(data);
     authedAxios()
-      [id ? 'put' : 'post'](`http://localhost:8000/guides/${id || ''}`, data)
+      [id ? 'put' : 'post'](`https://bw-how-to.herokuapp.com/guides/${id || ''}`, data)
       .then(res => {
         console.log(res.data);
         console.log('added!');

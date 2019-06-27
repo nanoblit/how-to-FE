@@ -34,7 +34,7 @@ const Register = ({ history }) => {
 
   const register = (username, password, type) => {
     axios
-      .post('http://localhost:8000/register', { username, password, type })
+      .post('https://bw-how-to.herokuapp.com/register', { username, password, type })
       .then(res => {
         history.push('/login');
         console.log('.');

@@ -86,7 +86,7 @@ const Guides = ({ guides, fetchGuides, setGuides }) => {
 
   const deleteGuide = id => {
     authedAxios()
-      .delete(`http://localhost:8000/guides/${id}`)
+      .delete(`https://bw-how-to.herokuapp.com/guides/${id}`)
       .then(() => {
         fetchGuides();
       })
