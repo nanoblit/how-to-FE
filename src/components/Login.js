@@ -1,7 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+import {
+  Button, Heading, FormField, TextInput,
+} from 'grommet';
 
 // Add spinner and display error
+
+const LoginDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    label, button {
+      margin-bottom: 20px;
+    }
+  }
+
+  p {
+    color: red;
+  }
+`;
 
 const Login = ({ history }) => {
   const [loginError, setLoginError] = useState('');
@@ -30,21 +53,19 @@ const Login = ({ history }) => {
   };
 
   return (
-    <div>
-      <p>Log in</p>
+    <LoginDiv>
+      <Heading>Log in</Heading>
       <form onSubmit={handleLogin}>
-        <label htmlFor="username">
-          Username
-          <input ref={usernameRef} id="username" required />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input ref={passwordRef} id="password" type="password" required />
-        </label>
-        <button type="submit">Login</button>
+        <FormField>
+          <TextInput ref={usernameRef} placeholder="Username" required />
+        </FormField>
+        <FormField>
+          <TextInput ref={passwordRef} placeholder="Password" type="password" required />
+        </FormField>
+        <Button type="submit" label="Login" />
       </form>
       {loginError && <p>{loginError}</p>}
-    </div>
+    </LoginDiv>
   );
 };
 

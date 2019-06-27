@@ -13,7 +13,9 @@ const withCreator = Component => props => {
     if (localStorage.getItem('type') === 'creator') {
       if (props.match.params.id) {
         const guide = props.guides.find(({ id }) => id === Number(props.match.params.id));
-        if (guide.username === localStorage.getItem('username')) {
+        if (!guide) {
+          props.history.push('/');
+        } else if (guide.username === localStorage.getItem('username')) {
           setAuthorizing(false);
           setAuthorized(true);
         } else {

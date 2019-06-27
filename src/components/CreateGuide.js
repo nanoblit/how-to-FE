@@ -63,6 +63,7 @@ const CreateGuide = ({
       title: titleRef.current.value,
       description: descriptionRef.current.value,
       type: categoryRef.current.value,
+      link: linkRef.current.value,
       user_id: Number(localStorage.getItem('id')),
     };
 
@@ -70,6 +71,7 @@ const CreateGuide = ({
       toSend[`step_${idx + 1}`] = step;
     });
     sendGuide(toSend);
+    history.push('/');
   };
 
   useEffect(() => {
@@ -94,7 +96,7 @@ const CreateGuide = ({
     <div>
       <Link to="/">Back</Link>
       {match.params.id && (
-        <button type="button" onClick={deleteGuide()}>
+        <button type="button" onClick={deleteGuide}>
           Delete
         </button>
       )}

@@ -1,19 +1,43 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+import {
+  Button, Heading, FormField, TextInput, Select,
+} from 'grommet';
 
 // Add spinner and display error
 
+const RegisterDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    label, button, select, >div {
+      margin-bottom: 20px;
+    }
+  }
+
+  p {
+    color: red;
+  }
+`;
+
 const Register = ({ history }) => {
   const [registerError, setRegisterError] = useState('');
+  const [accountType, setAccountType] = useState('viewer');
   const usernameRef = React.createRef();
   const passwordRef = React.createRef();
-  const accountTypeRef = React.createRef();
 
   const register = (username, password, type) => {
     axios
       .post('http://localhost:8000/register', { username, password, type })
       .then(res => {
         history.push('/login');
+        console.log('.');
       })
       .catch(error => {
         setRegisterError("Couldn't register");
@@ -23,35 +47,29 @@ const Register = ({ history }) => {
 
   const handleRegister = e => {
     e.preventDefault();
-    register(
-      usernameRef.current.value.trim(),
-      passwordRef.current.value.trim(),
-      accountTypeRef.current.value,
-    );
+    register(usernameRef.current.value.trim(), passwordRef.current.value.trim(), accountType);
   };
 
   return (
-    <div>
-      <p>Register</p>
+    <RegisterDiv>
+      <Heading>Register</Heading>
       <form onSubmit={handleRegister}>
-        <label htmlFor="username">
-          Username
-          <input ref={usernameRef} id="username" />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input ref={passwordRef} id="password" type="password" />
-        </label>
-        <label htmlFor="accountType">
-          Username
-          <select ref={accountTypeRef} id="accountType">
-            <option value="viewer">Viewer</option>
-            <option value="creator">Creator</option>
-          </select>
-        </label>
-        <button type="submit">Register</button>
+        <FormField>
+          <TextInput ref={usernameRef} placeholder="Username" required />
+        </FormField>
+        <FormField>
+          <TextInput ref={passwordRef} placeholder="Password" type="password" required />
+        </FormField>
+        <div>Account type</div>
+        <Select
+          options={['viewer', 'creator']}
+          value={accountType}
+          onChange={({ option }) => setAccountType(option)}
+        />
+        <Button type="submit" label="Register" />
       </form>
-    </div>
+      {registerError && <p>{registerError}</p>}
+    </RegisterDiv>
   );
 };
 
