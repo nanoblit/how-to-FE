@@ -75,6 +75,7 @@ const GuidesDiv = styled.div`
 const CardDiv = styled.div`
   ${({ thumbnail }) => (thumbnail ? `background-image: url("${thumbnail}");` : '')}
   background-size: cover;
+  background-position: center; 
 `;
 
 const Guides = ({ guides, fetchGuides, setGuides }) => {
