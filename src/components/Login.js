@@ -8,7 +8,6 @@ const Login = () => {
   const passwordRef = React.createRef();
 
   const login = (username, password) => {
-    console.log({ username, password });
     axios
       .post('http://localhost:8000/login', { username, password })
       .then(res => {
@@ -36,7 +35,7 @@ const Login = () => {
       </label>
       <label htmlFor="password">
         Password
-        <input ref={passwordRef} id="password" required />
+        <input ref={passwordRef} id="password" type="password" required />
       </label>
       <button type="submit">Login</button>
     </form>

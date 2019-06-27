@@ -11,12 +11,10 @@ const withAuth = Component => props => {
 
   const authorize = () => {
     const id = localStorage.getItem('id');
-    console.log(id);
     if (id) {
       authedAxios()
         .get(`http://localhost:8000/users/${id}`)
         .then(() => {
-          console.log(`http://localhost:8000/users/${id}`);
           setAuthorized(true);
           setAuthorizing(false);
         })
@@ -30,7 +28,6 @@ const withAuth = Component => props => {
   };
 
   useEffect(() => {
-    console.log(props);
     authorize();
   }, []);
 

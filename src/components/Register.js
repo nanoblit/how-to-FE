@@ -9,7 +9,6 @@ const Register = () => {
   const accountTypeRef = React.createRef();
 
   const register = (username, password, type) => {
-    console.log({ username, password, type });
     axios
       .post('http://localhost:8000/register', { username, password, type })
       .then(res => {
@@ -37,7 +36,7 @@ const Register = () => {
       </label>
       <label htmlFor="password">
         Password
-        <input ref={passwordRef} id="password" />
+        <input ref={passwordRef} id="password" type="password" />
       </label>
       <label htmlFor="accountType">
         Username

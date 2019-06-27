@@ -13,7 +13,6 @@ const withCreator = Component => props => {
     if (localStorage.getItem('type') === 'creator') {
       if (props.match.params.id) {
         const guide = props.guides.find(({ id }) => id === Number(props.match.params.id));
-        console.log(props.guides);
         if (guide.username === localStorage.getItem('username')) {
           setAuthorizing(false);
           setAuthorized(true);
@@ -33,17 +32,15 @@ const withCreator = Component => props => {
     if (props.guides.length !== 0) {
       authorize();
     }
-  }, [props.guides]);
+  });
 
   useEffect(() => {
     if (props.guides.length === 0) {
-      console.log('gggggggggggggggggggggggg');
       props.fetchGuides();
     }
   }, []);
 
   const render = () => {
-    console.log(authorizing, authorized);
     if (!authorizing && authorized) {
       return <Component {...props} redirected />;
     }

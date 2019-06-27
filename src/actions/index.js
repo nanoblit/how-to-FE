@@ -1,5 +1,6 @@
-import authedAxios from '../misc/authedAxios';
+import { createBrowserHistory } from 'history';
 
+import authedAxios from '../misc/authedAxios';
 import * as types from './types';
 
 export const fetchGuides = () => dispatch => {
@@ -12,6 +13,7 @@ export const fetchGuides = () => dispatch => {
     })
     .catch(error => {
       console.log(error.message);
+      createBrowserHistory().push('/welcome'); // Doesn't work when going back
     });
 };
 
