@@ -44,7 +44,7 @@ const GuidesDiv = styled.div`
       background-color: #c2b5db;
       text-decoration: none;
 
-      @media screen and (max-width: 400px) {
+      @media screen and (max-width: 480px) {
         width: 100%;
       }
 
