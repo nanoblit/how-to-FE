@@ -168,12 +168,12 @@ const CreateGuide = ({
           Link
           <TextInput ref={linkRef} id="link" required />
           {steps.map((step, idx) => (
-            <>
+            <div key={idx}>
               Step {idx + 1}
               <div>
                 <TextArea value={step} onChange={e => handleStepChange(e, idx)} required />
               </div>
-            </>
+            </div>
           ))}
           <div className="stepsButtons">
             <Button type="button" onClick={handleMoreSteps} label="More steps" />

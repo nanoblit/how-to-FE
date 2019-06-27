@@ -95,8 +95,8 @@ const Guide = ({
       <p>description: {guide.description}</p>
       <a href={guide.link}>{guide.link}</a>
       <ol>
-        {steps.map(step => {
-          if (step) return <li>{step}</li>;
+        {steps.map((step, idx) => {
+          if (step) return <li key={idx}>{step}</li>;
           return null;
         })}
       </ol>

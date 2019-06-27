@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
-  Button, Heading, FormField, TextInput, Select, RadioButton, Text,
+  Button, Heading, FormField, TextInput, Select, RadioButton, Text, Box,
 } from 'grommet';
 import youtubeThumbnail from 'youtube-thumbnail';
 
@@ -40,7 +40,7 @@ const GuidesDiv = styled.div`
       display: block;
       width: 45%;
       height: 200px;
-      margin-bottom: 20px;
+      margin-bottom: 60px;
       background-color: #c2b5db;
       text-decoration: none;
 
@@ -56,15 +56,16 @@ const GuidesDiv = styled.div`
 
       .cardDiv {
         display: flex;
+        flex-direction: column;
         height: 100%;
         justify-content: space-between;
+      }
+      .guideButtons {
+        align-self: flex-end;
+        margin-top: 5px;
 
-        .guideButtons {
-          align-self: flex-end;
-          button {
-            background-color: #C2B5DB;
-            margin-right: 5px;
-          }
+        button {
+          margin-left: 5px;
         }
       }
     }
@@ -84,7 +85,8 @@ const Guides = ({ guides, fetchGuides, setGuides }) => {
     fetchGuides();
   }, []);
 
-  const deleteGuide = id => {
+  const deleteGuide = (e, id) => {
+    e.stopPropagation();
     authedAxios()
       .delete(`https://bw-how-to.herokuapp.com/guides/${id}`)
       .then(() => {
@@ -165,27 +167,29 @@ const Guides = ({ guides, fetchGuides, setGuides }) => {
           ({
             id, title, username, displayed, link,
           }) => displayed && (
-          <Link key={id} className="card" to={`guide/${id}`}>
-            <CardDiv thumbnail={getYoutubeThumbnail(link)} className="cardDiv">
-              <Text>
-                {title}
-                <br /> by {username}
-              </Text>
-              {doesBelongToUser(id) && (
-              <div className="guideButtons">
-                <Link to={`guide/${id}/edit`}>
-                  <Button label="Edit" />
-                </Link>
-                <Button
-                  type="button"
-                  onClick={() => deleteGuide(id)}
-                  label="Delete"
-                  color="status-critical"
-                />
-              </div>
-              )}
-            </CardDiv>
-          </Link>
+          <Box key={id} className="card" elevation="medium">
+            <Link to={`guide/${id}`}>
+              <CardDiv thumbnail={getYoutubeThumbnail(link)} className="cardDiv">
+                <Text>
+                  {title}
+                  <br /> by {username}
+                </Text>
+              </CardDiv>
+            </Link>
+            {doesBelongToUser(id) && (
+            <div className="guideButtons">
+              <Link to={`guide/${id}/edit`}>
+                <Button label="Edit" />
+              </Link>
+              <Button
+                type="button"
+                onClickCapture={e => deleteGuide(e, id)}
+                label="Delete"
+                color="status-critical"
+              />
+            </div>
+            )}
+          </Box>
           ),
         )}
       </div>
