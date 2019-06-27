@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 // Add spinner and display error
 
-const Register = () => {
+const Register = ({ history }) => {
+  const [registerError, setRegisterError] = useState('');
   const usernameRef = React.createRef();
   const passwordRef = React.createRef();
   const accountTypeRef = React.createRef();
@@ -12,10 +13,11 @@ const Register = () => {
     axios
       .post('http://localhost:8000/register', { username, password, type })
       .then(res => {
-        console.log(res.data);
+        history.push('/login');
       })
       .catch(error => {
-        console.log(error.message);
+        setRegisterError("Couldn't register");
+        console.log(error);
       });
   };
 
@@ -29,24 +31,27 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <label htmlFor="username">
-        Username
-        <input ref={usernameRef} id="username" />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input ref={passwordRef} id="password" type="password" />
-      </label>
-      <label htmlFor="accountType">
-        Username
-        <select ref={accountTypeRef} id="accountType">
-          <option value="viewer">Viewer</option>
-          <option value="creator">Creator</option>
-        </select>
-      </label>
-      <button type="submit">Register</button>
-    </form>
+    <div>
+      <p>Register</p>
+      <form onSubmit={handleRegister}>
+        <label htmlFor="username">
+          Username
+          <input ref={usernameRef} id="username" />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input ref={passwordRef} id="password" type="password" />
+        </label>
+        <label htmlFor="accountType">
+          Username
+          <select ref={accountTypeRef} id="accountType">
+            <option value="viewer">Viewer</option>
+            <option value="creator">Creator</option>
+          </select>
+        </label>
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
 };
 

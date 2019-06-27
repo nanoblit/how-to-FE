@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 // Add spinner and display error
 
-const Login = () => {
+const Login = ({ history }) => {
+  const [loginError, setLoginError] = useState('');
   const usernameRef = React.createRef();
   const passwordRef = React.createRef();
 
@@ -15,10 +16,11 @@ const Login = () => {
         localStorage.setItem('username', res.data.username);
         localStorage.setItem('type', res.data.type);
         localStorage.setItem('id', res.data.id);
-        console.log(res.data);
+        history.push('/');
       })
       .catch(error => {
-        console.log(error.message);
+        setLoginError("Couldn't log in");
+        console.log(error);
       });
   };
 
@@ -28,17 +30,21 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <label htmlFor="username">
-        Username
-        <input ref={usernameRef} id="username" required />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input ref={passwordRef} id="password" type="password" required />
-      </label>
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <p>Log in</p>
+      <form onSubmit={handleLogin}>
+        <label htmlFor="username">
+          Username
+          <input ref={usernameRef} id="username" required />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input ref={passwordRef} id="password" type="password" required />
+        </label>
+        <button type="submit">Login</button>
+      </form>
+      {loginError && <p>{loginError}</p>}
+    </div>
   );
 };
 
