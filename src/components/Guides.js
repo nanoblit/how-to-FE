@@ -42,7 +42,6 @@ const GuidesDiv = styled.div`
       height: 200px;
       margin-bottom: 60px;
       background-color: #c2b5db;
-      text-decoration: none;
 
       @media screen and (max-width: 480px) {
         width: 100%;
@@ -50,6 +49,7 @@ const GuidesDiv = styled.div`
 
       span {
         color: white;
+        text-decoration: none;
         margin-left: 5px;
         text-shadow: 2px 2px 11px #000000, 2px 2px 11px #000000, 2px 2px 11px #000000;
       }
