@@ -43,6 +43,10 @@ const GuidesDiv = styled.div`
       margin-bottom: 60px;
       background-color: #c2b5db;
 
+      a {
+        text-decoration: none;
+      }
+
       @media screen and (max-width: 480px) {
         width: 100%;
       }
