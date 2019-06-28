@@ -1,24 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+import {
+  Button, Heading, FormField, TextInput,
+} from 'grommet';
 
 // Add spinner and display error
 
-const Login = () => {
+const LoginDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    label, button {
+      margin-bottom: 20px;
+    }
+  }
+
+  p {
+    color: red;
+  }
+`;
+
+const Login = ({ history }) => {
+  const [loginError, setLoginError] = useState('');
   const usernameRef = React.createRef();
   const passwordRef = React.createRef();
 
   const login = (username, password) => {
     axios
-      .post('http://localhost:8000/login', { username, password })
+      .post('https://bw-how-to.herokuapp.com/login', { username, password })
       .then(res => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('username', res.data.username);
         localStorage.setItem('type', res.data.type);
         localStorage.setItem('id', res.data.id);
-        console.log(res.data);
+        history.push('/');
       })
       .catch(error => {
-        console.log(error.message);
+        setLoginError("Couldn't log in");
+        console.log(error);
       });
   };
 
@@ -28,17 +53,19 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <label htmlFor="username">
-        Username
-        <input ref={usernameRef} id="username" required />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input ref={passwordRef} id="password" type="password" required />
-      </label>
-      <button type="submit">Login</button>
-    </form>
+    <LoginDiv>
+      <Heading>Log in</Heading>
+      <form onSubmit={handleLogin}>
+        <FormField>
+          <TextInput ref={usernameRef} placeholder="Username" required />
+        </FormField>
+        <FormField>
+          <TextInput ref={passwordRef} placeholder="Password" type="password" required />
+        </FormField>
+        <Button type="submit" label="Login" />
+      </form>
+      {loginError && <p>{loginError}</p>}
+    </LoginDiv>
   );
 };
 

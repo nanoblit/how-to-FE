@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router';
+import { Grommet, Box } from 'grommet';
 
 import withAuth from './components/withAuth';
 import withCreator from './components/withCreator';
@@ -9,6 +10,7 @@ import Register from './components/Register';
 import Guides from './components/Guides';
 import Guide from './components/Guide';
 import CreateGuide from './components/CreateGuide';
+import GlobalStyles from './styles/GlobalStyles';
 
 /*
 What pages do we need?
@@ -75,16 +77,36 @@ const AuthedGuide = withAuth(Guide);
 const AuthedCreateGuide = withCreator(withAuth(CreateGuide));
 const AuthedEditGuide = withCreator(withAuth(CreateGuide));
 
+const theme = {
+  global: {
+    font: {
+      family: 'Roboto',
+      size: '14px',
+      height: '20px',
+    },
+  },
+};
+
 const App = () => (
-  <div>
-    <Route path="/welcome" component={Welcome} />
-    <Route path="/login" component={Login} />
-    <Route path="/register" component={Register} />
-    <Route path="/" exact render={props => <AuthedGuides {...props} redirected />} />
-    <Route path="/guide/:id" exact render={props => <AuthedGuide {...props} redirected />} />
-    <Route path="/guide/:id/edit" component={AuthedEditGuide} />
-    <Route path="/createGuide" component={AuthedCreateGuide} />
-  </div>
+  <Grommet theme={theme}>
+    <GlobalStyles />
+    <Box
+      size={{ width: { max: 'xsmall' } }}
+      background="
+      light-2"
+      pad={{ left: 'medium', right: 'medium', vertical: 'small' }}
+      elevation="medium"
+      style={{ zIndex: '1', maxWidth: '700px', margin: '0 auto' }}
+    >
+      <Route path="/welcome" component={Welcome} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      <Route path="/" exact render={props => <AuthedGuides {...props} redirected />} />
+      <Route path="/guide/:id" exact render={props => <AuthedGuide {...props} redirected />} />
+      <Route path="/guide/:id/edit" component={AuthedEditGuide} />
+      <Route path="/createGuide" component={AuthedCreateGuide} />
+    </Box>
+  </Grommet>
 );
 
 export default App;

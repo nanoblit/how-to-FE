@@ -1,52 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+import {
+  Button, Heading, FormField, TextInput, Select,
+} from 'grommet';
 
 // Add spinner and display error
 
-const Register = () => {
+const RegisterDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    label, button, select, >div {
+      margin-bottom: 20px;
+    }
+  }
+
+  p {
+    color: red;
+  }
+`;
+
+const Register = ({ history }) => {
+  const [registerError, setRegisterError] = useState('');
+  const [accountType, setAccountType] = useState('viewer');
   const usernameRef = React.createRef();
   const passwordRef = React.createRef();
-  const accountTypeRef = React.createRef();
 
   const register = (username, password, type) => {
     axios
-      .post('http://localhost:8000/register', { username, password, type })
+      .post('https://bw-how-to.herokuapp.com/register', { username, password, type })
       .then(res => {
-        console.log(res.data);
+        history.push('/login');
+        console.log('.');
       })
       .catch(error => {
-        console.log(error.message);
+        setRegisterError("Couldn't register");
+        console.log(error);
       });
   };
 
   const handleRegister = e => {
     e.preventDefault();
-    register(
-      usernameRef.current.value.trim(),
-      passwordRef.current.value.trim(),
-      accountTypeRef.current.value,
-    );
+    register(usernameRef.current.value.trim(), passwordRef.current.value.trim(), accountType);
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <label htmlFor="username">
-        Username
-        <input ref={usernameRef} id="username" />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input ref={passwordRef} id="password" type="password" />
-      </label>
-      <label htmlFor="accountType">
-        Username
-        <select ref={accountTypeRef} id="accountType">
-          <option value="viewer">Viewer</option>
-          <option value="creator">Creator</option>
-        </select>
-      </label>
-      <button type="submit">Register</button>
-    </form>
+    <RegisterDiv>
+      <Heading>Register</Heading>
+      <form onSubmit={handleRegister}>
+        <FormField>
+          <TextInput ref={usernameRef} placeholder="Username" required />
+        </FormField>
+        <FormField>
+          <TextInput ref={passwordRef} placeholder="Password" type="password" required />
+        </FormField>
+        <div>Account type</div>
+        <Select
+          options={['viewer', 'creator']}
+          value={accountType}
+          onChange={({ option }) => setAccountType(option)}
+        />
+        <Button type="submit" label="Register" />
+      </form>
+      {registerError && <p>{registerError}</p>}
+    </RegisterDiv>
   );
 };
 
