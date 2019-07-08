@@ -1,3 +1,3 @@
 # how-to-FE
 
-https://how-to-jm.netlify.com/welcome
+https://how-to-jm.netlify.com
